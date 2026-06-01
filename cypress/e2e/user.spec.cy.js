@@ -12,14 +12,17 @@ describe ('Orange HRM Tests', () => {
     myInfoButton: '[href="/web/index.php/pim/viewMyDetails"]',
     firstNameField: "[name='firstName']",
     lastNameField: "[name='lastName']",
-    genericField: ".oxd-inpuut--active",
-    firstNameField: '[name="firstName"]',
+    genericField: ".oxd-input--active",
     dateField: "[placeholder='yyyy-mm-dd']",
-    dateCloseButton: ".--close"
+    genericCombobox:  ".oxd-select-text--arrow",
+    secondItemCombobox: ".oxd-select-dropdown > :nth-child(2)",
+    ItemCombobox: ".oxd-select-dropdown > :nth-child(3)",
+    dateCloseButton: ".--close",
+    submitButton: " .orangehrm-left-space"
+
   }
-
+  
 it.only('User Info Update - Success', () => {
-
 cy.visit('/auth/login')
 cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
 cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
@@ -29,12 +32,25 @@ cy.get(selectorsList.dashboardGrid)
 cy.get(selectorsList.myInfoButton).click()
 cy.get(selectorsList.firstNameField).clear().type('FirstNameTest')  
 cy.get(selectorsList.lastNameField).clear().type('LastNameTest')
+//cy.get(selectorsList.genericField).eq(3).clear().type('123456789')
+cy.get(selectorsList.genericField).eq(4).clear().type('Employee')
+cy.get(selectorsList.genericField).eq(5).clear().type('OtherIdTest')
+//cy.get(selectorsList.genecField).eq(6).clear().type('DriversLicenseTest')
+cy.get(selectorsList.genericField).eq(7).clear().type('2026-06-01')
+cy.get(selectorsList.dateCloseButton).click()
+cy.get(selectorsList.genericField).eq(8).clear().type('ssnNumberTest')
+//cy.get(selectorsList.genericField).eq(9).clear().type('sinNumberTest')
+cy.get(selectorsList.submitButton).eq(0).click({force: true})
+cy.get('body').should('contain', 'Successfully Updated')
+cy.get('.oxd-toast-close')
 
-
-
+cy.get(selectorsList.genericCombobox).eq(0).click({force: true})
+cy.get(selectorsList.secondItemCombobox).click()
+cy.get(selectorsList. genericCombobox).eq(1).click({force: true})
+cy.get(' .oxd-select-dropdown > :nth-child(2)').click()
 
 })
-it('Login - Fail', () => {
+it('Login - Fail', () =>  {
   cy.visit('/auth/login')
   cy.get(selectorsList.usernameField).type(userData.userFail.username)
   cy.get(selectorsList.passwordField).type(userData.userFail.password)
